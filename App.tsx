@@ -51,7 +51,6 @@ const App: React.FC = () => {
   useEffect(() => {
     fetchQuote('wisdom');
 
-    // PWA Installation logic
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       setDeferredPrompt(e);

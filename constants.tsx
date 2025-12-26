@@ -1,5 +1,5 @@
 
-import { VideoTemplate, QuoteCategory } from './types';
+import { VideoTemplate, QuoteCategory } from './types.ts';
 
 export const QUOTE_CATEGORIES: QuoteCategory[] = [
   {

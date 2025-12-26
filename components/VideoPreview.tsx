@@ -1,6 +1,6 @@
 
 import React, { useEffect, useRef, useImperativeHandle, forwardRef } from 'react';
-import { AliQuote, VideoTemplate, VideoSettings } from '../types';
+import { AliQuote, VideoTemplate, VideoSettings } from '../types.ts';
 
 interface VideoPreviewProps {
   quote: AliQuote | null;
@@ -43,7 +43,6 @@ const VideoPreview = forwardRef<VideoPreviewHandle, VideoPreviewProps>(({
       const W = canvas.width;
       const H = canvas.height;
 
-      // 1. Draw Background
       ctx.fillStyle = '#000000';
       ctx.fillRect(0, 0, W, H);
       
@@ -75,7 +74,6 @@ const VideoPreview = forwardRef<VideoPreviewHandle, VideoPreviewProps>(({
         ctx.fillRect(0, 0, W, H);
       }
 
-      // 2. Draw Content
       if (quote) {
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
@@ -95,14 +93,12 @@ const VideoPreview = forwardRef<VideoPreviewHandle, VideoPreviewProps>(({
           baseUrduSize = 44;
         }
 
-        // Prepare Arabic Text
         let arabicLines: string[] = [];
         if (settings.includeArabic && quote.arabic) {
           ctx.font = `bold ${baseArabicSize}px Amiri, serif`;
           arabicLines = wrapText(ctx, quote.arabic, maxWidth);
         }
 
-        // Prepare Urdu Text
         ctx.font = `400 ${baseUrduSize}px 'Noto Nastaliq Urdu', serif`;
         const urduLines = wrapText(ctx, quote.urdu, maxWidth);
 
@@ -113,14 +109,12 @@ const VideoPreview = forwardRef<VideoPreviewHandle, VideoPreviewProps>(({
         const spacing = 120;
         
         const totalContentHeight = arabicHeight + (arabicHeight > 0 ? spacing : 0) + urduHeight;
-        
         const headerSpace = 300;
         const footerSpace = 400;
         const availableHeight = H - headerSpace - footerSpace;
         
         let currentY = headerSpace + (availableHeight - totalContentHeight) / 2;
 
-        // Draw Arabic
         if (settings.includeArabic && quote.arabic) {
           ctx.font = `bold ${baseArabicSize}px Amiri, serif`;
           ctx.fillStyle = '#fef3c7'; 
@@ -131,7 +125,6 @@ const VideoPreview = forwardRef<VideoPreviewHandle, VideoPreviewProps>(({
           currentY += spacing;
         }
 
-        // Draw Urdu
         ctx.font = `400 ${baseUrduSize}px 'Noto Nastaliq Urdu', serif`;
         ctx.fillStyle = 'white';
         urduLines.forEach((line) => {
@@ -139,7 +132,6 @@ const VideoPreview = forwardRef<VideoPreviewHandle, VideoPreviewProps>(({
           currentY += urduLineHeight;
         });
 
-        // Footer Reference
         const footerCenterY = H - 240;
         ctx.shadowBlur = 0;
         ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
@@ -157,7 +149,6 @@ const VideoPreview = forwardRef<VideoPreviewHandle, VideoPreviewProps>(({
         ctx.fillText(quote.source.toUpperCase(), W / 2, footerCenterY);
       }
 
-      // Branding Header
       ctx.shadowBlur = 0;
       ctx.fillStyle = '#fbbf24'; 
       ctx.beginPath();
